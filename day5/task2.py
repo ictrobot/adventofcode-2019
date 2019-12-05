@@ -1,32 +1,37 @@
-import functools
-
-
-def resolve_parameter(pc, memory, parameter_number, write):
+def operand_set(pc, memory, parameter_number, write_value):
     val = memory[pc + parameter_number]
     opcode = memory[pc]
     mode = (opcode // 10 ** (1 + parameter_number)) % 10
 
     if mode == 0:  # position
-        return functools.partial(memory.__setitem__ if write else memory.__getitem__, val)
+        if write_value is None:
+            return memory[val]
+        else:
+            memory[val] = write_value
     elif mode == 1:  # immediate
-        if write:
+        if write_value is None:
+            return val
+        else:
             raise ValueError()
-        return lambda: val
+
+
+def operand_get(pc, memory, parameter_number):
+    return operand_set(pc, memory, parameter_number, None)
 
 
 def op_template(func):
     def operation(pc, memory):
-        operand1 = resolve_parameter(pc, memory, 1, False)()
-        operand2 = resolve_parameter(pc, memory, 2, False)()
-        resolve_parameter(pc, memory, 3, True)(func(operand1, operand2))
+        operand1 = operand_get(pc, memory, 1)
+        operand2 = operand_get(pc, memory, 2)
+        operand_set(pc, memory, 3, func(operand1, operand2))
         return pc + 4
     return operation
 
 
 def op_conditional_jump(cond):
     def operation(pc, memory):
-        if cond(resolve_parameter(pc, memory, 1, False)()):
-            return resolve_parameter(pc, memory, 2, False)()
+        if cond(operand_get(pc, memory, 1)):
+            return operand_get(pc, memory, 2)
         else:
             return pc + 3
     return operation
@@ -39,12 +44,12 @@ def opcode3_input(pc, memory):
             break
         except ValueError:
             print("Please provide an integer")
-    resolve_parameter(pc, memory, 1, True)(val)
+    operand_set(pc, memory, 1, val)
     return pc + 2
 
 
 def opcode4_output(pc, memory):
-    print(resolve_parameter(pc, memory, 1, False)())
+    print(operand_get(pc, memory, 1))
     return pc + 2
 
 
