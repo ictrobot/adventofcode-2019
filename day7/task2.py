@@ -85,7 +85,7 @@ OPCODES = get_opcodes()
 
 
 if __name__ == "__main__":
-    with open(__file__.replace(".py", ".in"), "r") as in_file:
+    with open("input.in", "r") as in_file:
         program = [int(x.strip()) for x in in_file.read().split(",")]
 
     def test(permutation):

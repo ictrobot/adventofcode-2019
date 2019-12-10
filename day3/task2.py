@@ -1,5 +1,5 @@
 lines = []
-with open(__file__.replace(".py", ".in"), "r") as in_file:
+with open("input.in", "r") as in_file:
     for l in in_file:
         lines.append([x.strip() for x in l.split(",")])
 

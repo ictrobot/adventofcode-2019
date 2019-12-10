@@ -1,4 +1,4 @@
-with open(__file__.replace(".py", ".in"), "r") as in_file:
+with open("input.in", "r") as in_file:
     data = [int(x.strip()) for x in in_file.read().split(",")]
 
 data[1] = 12
@@ -10,4 +10,4 @@ while idx < len(data) and data[idx] in opcodes:
     data[data[idx + 3]] = opcodes[data[idx]](data[data[idx + 1]], data[data[idx + 2]])
     idx += 4
 
-print(data)
+print(data[0])

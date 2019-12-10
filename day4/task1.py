@@ -1,6 +1,6 @@
 import re
 
-with open(__file__.replace(".py", ".in"), "r") as in_file:
+with open("input.in", "r") as in_file:
     MIN, MAX = (int(x.strip()) for x in in_file.read().split("-"))
 
 passwords = [i for i in range(MIN, MAX + 1)

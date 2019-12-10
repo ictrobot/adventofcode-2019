@@ -1,4 +1,4 @@
-with open(__file__.replace(".py", ".in"), "r") as in_file:
+with open("input.in", "r") as in_file:
     DATA = [int(x.strip()) for x in in_file.read().split(",")]
 
 

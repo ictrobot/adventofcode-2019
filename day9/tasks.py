@@ -104,8 +104,15 @@ OPCODES = get_opcodes()
 
 
 if __name__ == "__main__":
-    with open(__file__.replace(".py", ".in"), "r") as in_file:
+    with open("input.in", "r") as in_file:
         program = [int(x.strip()) for x in in_file.read().split(",")]
 
-    for output in IntcodeComputer(program, [2]).run_outputs():
-        print(output)
+    # task 1
+    ic = IntcodeComputer(program, [1])
+    ic.run()
+    print("Test mode (input 1)  =", ic.outputs.pop())
+
+    # task 2
+    ic = IntcodeComputer(program, [2])
+    ic.run()
+    print("Boost mode (input 2) =", ic.outputs.pop())
